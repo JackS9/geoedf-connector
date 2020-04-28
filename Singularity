@@ -1,14 +1,8 @@
 BootStrap: docker
 From: continuumio/miniconda3
 
-%files
-
-    framework/ /tmp
-    faoinput/ /tmp
-    datetimefilter/ /tmp
-    pathfilter/ /tmp
-    nasainput /tmp
-    run-workflow-stage.sh /usr/local/bin/
+%setup
+    git clone https://github.com/JackS9/geoedf-connector.git /tmp/geoedf-connector
 
 %environment
     export PYTHONPATH=/usr/local/lib/python3.7/dist-packages:$PYTHONPATH
@@ -18,10 +12,11 @@ From: continuumio/miniconda3
 
     apt-get update && apt-get -y install python3-pip wget curl
 
-    cd /tmp/framework && pip3 install .
+    cd /tmp/geoedf-connector/framework && pip3 install .
 
     chmod -R go+rX /usr/local/lib/python3.7/dist-packages
 
+    cp /tmp/geoedf-connector/run-workflow-stage.sh /usr/local/bin
     chmod a+x /usr/local/bin/run-workflow-stage.sh
 
     chmod a+x /usr/local/bin/merge.py
@@ -33,16 +28,16 @@ From: continuumio/miniconda3
 
     conda create --name faoinput
 
-    cd /tmp/faoinput && conda install -n faoinput pip && conda run -n faoinput /opt/conda/envs/faoinput/bin/pip install .
+    cd /tmp/geoedf-connector/faoinput && conda install -n faoinput pip && conda run -n faoinput /opt/conda/envs/faoinput/bin/pip install .
 
     conda create --name datetimefilter
     
-    cd /tmp/datetimefilter && conda install -n datetimefilter pip && conda run -n datetimefilter /opt/conda/envs/datetimefilter/bin/pip install .
+    cd /tmp/geoedf-connector/datetimefilter && conda install -n datetimefilter pip && conda run -n datetimefilter /opt/conda/envs/datetimefilter/bin/pip install .
 
     conda create --name pathfilter
     
-    cd /tmp/pathfilter && conda install -n pathfilter pip && conda run -n pathfilter /opt/conda/envs/pathfilter/bin/pip install .
+    cd /tmp/geoedf-connector/pathfilter && conda install -n pathfilter pip && conda run -n pathfilter /opt/conda/envs/pathfilter/bin/pip install .
 
     conda create --name nasainput
 
-    cd /tmp/nasainput && conda install -n nasainput pip && conda run -n nasainput /opt/conda/envs/nasainput/bin/pip install .
+    cd /tmp/geoedf-connector/nasainput && conda install -n nasainput pip && conda run -n nasainput /opt/conda/envs/nasainput/bin/pip install .
